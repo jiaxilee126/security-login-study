@@ -1,0 +1,22 @@
+
+lee:
+  security:
+    browser:
+      loginPage: "/login"
+    code:
+      image:
+        length: 5
+        weight: 67
+        height: 23
+        expire: 60
+        url: /user/*
+    ## 腾讯云短信模板配置
+    qcloud:
+      appid: 1400203496
+      appkey: ec3fab15747b760a17cfdbac8438873c
+      templateId: 319260
+      smsSign: 李佳席个人成果
+
+server:
+  port: 8060
+

@@ -1,0 +1,14 @@
+
+lee:
+  security:
+    browser:
+      loginPage: "/login"
+    code:
+      image:
+        length: 5
+        weight: 67
+        height: 23
+        expire: 60
+        url: /user/*
+server:
+  port: 8060
