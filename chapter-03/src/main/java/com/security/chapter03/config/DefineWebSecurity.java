@@ -2,6 +2,8 @@ package com.security.chapter03.config;
 
 import com.security.chapter03.filter.ValidateCodeFilter;
 import com.security.chapter03.properties.SecurityProperties;
+import com.security.chapter03.smsauthentication.SmsAuthenticationFilter;
+import com.security.chapter03.smsauthentication.SmsAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,8 @@ public class DefineWebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private DefineAuthenticationFailureHandler defineAuthenticationFailureHandler;
 
+    @Autowired
+    private SmsAuthenticationSecurityConfig smsAuthenticationSecurityConfig;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //http.authorizeRequests().anyRequest().permitAll();
@@ -49,6 +53,8 @@ public class DefineWebSecurity extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setAuthenticationFailureHandler(defineAuthenticationFailureHandler);
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
+
+
         //第一步验证验证码
         http
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
@@ -60,11 +66,12 @@ public class DefineWebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage(),"/code/image").permitAll()
+                        securityProperties.getBrowser().getLoginPage(),"/code/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .apply(smsAuthenticationSecurityConfig);
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @ClassName SmsAuthenticationProvider
- * @Description TODO
+ * @Description 手机号校验逻辑
  * @Auth JussiLee
  * @Date 2019/4/25 17:19
  */
@@ -20,11 +20,14 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         SmsAuthenticationToken smsAuthenticationToken = (SmsAuthenticationToken)authentication;
+
         UserDetails user = userDetailsService.loadUserByUsername((String) smsAuthenticationToken.getPrincipal());
         if(user == null)
             throw new InternalAuthenticationServiceException("无法获取用户信息");
 
-        SmsAuthenticationToken authenticationResult = new SmsAuthenticationToken(user, user.getAuthorities());
+        //SmsAuthenticationToken authenticationResult = new SmsAuthenticationToken(user);
+        //如果有用户权限则这样写
+        SmsAuthenticationToken authenticationResult = new SmsAuthenticationToken(user,user.getAuthorities());
         authenticationResult.setDetails(smsAuthenticationToken);
         return authenticationResult;
     }

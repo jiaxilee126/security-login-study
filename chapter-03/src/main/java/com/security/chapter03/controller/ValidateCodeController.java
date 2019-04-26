@@ -3,6 +3,9 @@ package com.security.chapter03.controller;
 import com.security.chapter03.dto.ImageCode;
 import com.security.chapter03.dto.ValidateCode;
 import com.security.chapter03.validatecode.ValidateCodeGenerator;
+import com.security.chapter03.validatecode.ValidateCodeProcessor;
+import com.security.chapter03.validatecode.impl.ImageValidateCodeProcessor;
+import com.security.chapter03.validatecode.impl.SmsValidateCodeProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -24,26 +27,23 @@ import java.io.IOException;
 @RestController
 public class ValidateCodeController {
 
-    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
     @Autowired
-    private ValidateCodeGenerator imageCodeGenerator;
+    private ImageValidateCodeProcessor imageValidateCodeProcessor ;
+
+    @Autowired
+    private SmsValidateCodeProcessor smsValidateCodeProcessor;
 
     @GetMapping("/code/image")
-    public void createImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        //生成图片
-        ValidateCode imageCode = imageCodeGenerator.generate(new ServletWebRequest(request));
-        //放进session
-        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
-        //写出到响应中
-        ImageIO.write(((ImageCode)imageCode).getImage(), "JPEG", response.getOutputStream());
+    public void createImageCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        imageValidateCodeProcessor.process(new ServletWebRequest(request, response));
     }
 
     @GetMapping("/code/sms")
-    public void createSmsCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    public void createSmsCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        smsValidateCodeProcessor.process(new ServletWebRequest(request, response));
     }
 
 

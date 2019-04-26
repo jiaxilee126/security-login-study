@@ -5,10 +5,14 @@ import com.github.qcloudsms.SmsMultiSenderResult;
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
+import com.security.chapter03.properties.SecurityProperties;
+import com.security.chapter03.test.TestAuto;
+import com.security.chapter03.validatecode.impl.ImageCodeGenerator;
 import org.json.JSONException;
 
 import java.io.IOException;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
@@ -89,5 +93,21 @@ public class SmsSenderTest extends Chapter03ApplicationTests {
             // 网络 IO 错误
             e.printStackTrace();
         }
+    }
+
+
+    @Autowired
+    private ImageCodeGenerator imageCodeGenerator;
+
+    @Autowired
+    private SecurityProperties securityProperties;
+
+    @Autowired
+    private TestAuto auto;
+
+    @Test
+    public void test() {
+
+        System.out.println(auto.getSecurityProperties()+"===");
     }
 }

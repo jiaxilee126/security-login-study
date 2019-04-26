@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @Auth JussiLee
  * @Date 2019/4/25 14:04
  */
-@Component("smsCodeGenerator")
+@Component("sms")
 @Data
 public class SmsCodeGenerator implements ValidateCodeGenerator {
 

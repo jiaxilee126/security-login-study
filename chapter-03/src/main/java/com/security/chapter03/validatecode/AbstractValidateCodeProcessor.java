@@ -25,13 +25,13 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
      * 收集系统中所有的验证码实现
      */
     @Autowired
-    private Map<String, ValidateCodeGenerator> validateCodeGenerators = new HashMap<>();
+    protected Map<String, ValidateCodeGenerator> validateCodeGenerators;
 
     @Override
     public void process(ServletWebRequest request) throws Exception{
         T validateCode = generate(request);
-        save(request, validateCode);
-        send(request, validateCode);
+        this.save(request, validateCode);
+        this.send(request, validateCode);
     }
 
     private T generate(ServletWebRequest request) {
@@ -53,6 +53,7 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
         sessionStrategy.setAttribute(request, SESSION_KEY_PREFIX +
             getProcessorType(request).toUpperCase(), validateCode);
     }
+
 
     /**
      * 发送验证码

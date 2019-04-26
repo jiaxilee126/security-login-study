@@ -5,6 +5,7 @@ import com.security.chapter03.validatecode.ValidateCodeGenerator;
 import com.security.chapter03.properties.SecurityProperties;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -14,11 +15,12 @@ import java.util.Random;
 
 /**
  * @ClassName ImageCodeGenerator
- * @Description 图片验证码的实现
+ * @Description TODO
  * @Auth JussiLee
  * @Date 2019/4/24 10:58
  */
 @Data
+@Component("image")
 public class ImageCodeGenerator implements ValidateCodeGenerator{
     @Autowired
     private SecurityProperties securityProperties;
